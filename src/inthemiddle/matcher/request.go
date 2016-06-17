@@ -18,6 +18,7 @@ var matchers = map[string]RequestMatcher{}
 
 func Initialize() {
     register("plain", PlainTextRequestMatcher{})
+	register("regexp", RegexpRequestMatcher{})
 }
 
 func register(key string, m RequestMatcher) {

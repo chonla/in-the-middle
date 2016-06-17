@@ -34,6 +34,7 @@ func (r *Response) ToString() string {
 }
 
 func (r *Response) parse(body string) {
+	logger.Debug(body)
 	parts := strings.SplitN(body, "\r\n\r\n", 2)
 	header := parts[0]
 	payload := parts[1]
