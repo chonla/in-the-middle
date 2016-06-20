@@ -25,7 +25,7 @@ type Args struct {
 	Port         string
 	ExportFolder string
 	Help         bool
-	Replay       bool
+	Record       bool
 }
 
 func main() {
@@ -44,7 +44,7 @@ func testArgs() (args Args) {
 	flag.StringVar(&args.Ip, "ip", "0.0.0.0", "Listening IP address")
 	flag.StringVar(&args.Port, "port", "8080", "Listening port")
 	flag.StringVar(&args.ExportFolder, "export", "./fixtures", "Exporting folder")
-	flag.BoolVar(&args.Replay, "replay", false, "Replay mode (no recording activities)")
+	flag.BoolVar(&args.Record, "record", false, "Record mode (Record all activities)")
 	flag.BoolVar(&args.Help, "?", false, "Show usage")
 	flag.Parse()
 
@@ -64,7 +64,7 @@ func startInTheMiddle(args Args) {
 		Ip:           args.Ip,
 		Port:         args.Port,
 		ExportFolder: args.ExportFolder,
-		Replay:       args.Replay,
+		Record:       args.Record,
 		OnRequest: func(req *http.Request, ctx *goproxy.ProxyCtx) (*http.Request, *http.Response) {
 			ctx.RoundTripper = goproxy.RoundTripperFunc(func(req *http.Request, ctx *goproxy.ProxyCtx) (resp *http.Response, err error) {
 				ctx.UserData, resp, err = tr.DetailedRoundTrip(req)
@@ -81,7 +81,7 @@ func startInTheMiddle(args Args) {
 
 			logger.Info(inPFunc("--> ") + r.ToString())
 
-			if args.Replay {
+			if !args.Record {
 				resp, err := cacher.Find(req)
 				if err == nil {
 					logger.Debug("Cache HIT")
