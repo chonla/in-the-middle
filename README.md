@@ -26,6 +26,8 @@ Command line options
 
 Dependencies
 
+Use ```go get ./...``` to install all dependencies.
+
 * ```github.com/fatih/color```
 * ```gopkg.in/elazarl/goproxy.v1```
 * ```github.com/kr/pretty```
