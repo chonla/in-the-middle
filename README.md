@@ -2,13 +2,13 @@
 
 Stateful mock server
 
-To record activities
+## To record activities
 
 ```sh
 go run main/main.go -record
 ```
 
-To replay activities
+## To replay activities
 
 ```sh
 go run main/main.go
@@ -16,7 +16,7 @@ go run main/main.go
 
 Replaying recorded activities, In-The-Middle will load activities from stub.json from ```export folder```.
 
-Command line options
+## Command line options
 
 * ```-record``` to start record mode. Default is ```false```.
 * ```-ip <ip>``` to specify listening IP address. Default is ```0.0.0.0```.
@@ -24,7 +24,7 @@ Command line options
 * ```-export <path>``` to specify exporting directory. Default is ```./fixtures```.
 * ```-?``` to show options screen.
 
-Dependencies
+## Dependencies
 
 Use ```go get ./...``` to install all dependencies.
 
