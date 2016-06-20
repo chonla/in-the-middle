@@ -32,3 +32,4 @@ Use ```go get ./...``` to install all dependencies.
 * ```gopkg.in/elazarl/goproxy.v1```
 * ```github.com/kr/pretty```
 * ```gopkg.in/xmlpath.v1```
+* ```github.com/jmoiron/jsonq```
