@@ -1,13 +1,13 @@
 package matcher
 
 import (
-	"net/http"
+	httper "inthemiddle/httper"
 )
 
 type PlainTextRequestMatcher struct {
 }
 
-func (m PlainTextRequestMatcher) Match(req *http.Request, matcher *MatchOption) bool {
-    result := (req.URL.String() == matcher.Pattern)
+func (m PlainTextRequestMatcher) Match(req *httper.Request, matcher *MatchOption) bool {
+    result := (req.URL() == matcher.Pattern)
 	return result
 }

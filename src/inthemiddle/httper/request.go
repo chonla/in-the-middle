@@ -10,7 +10,7 @@ import (
 
 type Request struct {
 	h RequestHeader
-	p string
+	Payload string
 }
 
 type RequestHeader struct {
@@ -19,6 +19,25 @@ type RequestHeader struct {
 	protocol string
 	version  string
 	headers  []HeaderKeyPair
+}
+
+func (r *Request) URL() string {
+	protocol := "http://"
+	if r.h.protocol == "HTTPS" {
+		protocol = "https://"
+	}
+	host := r.h.Host()
+	path := r.h.path
+	return protocol + host + path
+}
+
+func (h *RequestHeader) Host() string {
+	for _, v := range h.headers {
+		if strings.ToLower(v.Key) == "host" {
+			return v.Value
+		}
+	}
+	return ""
 }
 
 func NewRequest(body string) Request {
@@ -67,7 +86,7 @@ func (r *Request) parse(body string) {
 	header := parts[0]
 	payload := parts[1]
 	r.h = NewRequestHeader(header)
-	r.p = payload
+	r.Payload = payload
 }
 
 func (h *RequestHeader) ToString() string {

@@ -2,8 +2,9 @@ package matcher
 
 import (
 	"net/http"
+	"net/http/httputil"
 
-	logger "inthemiddle/logger"
+	httper "inthemiddle/httper"
 )
 
 type MatchOption struct {
@@ -18,7 +19,7 @@ type MatchItem struct {
 }
 
 type RequestMatcher interface {
-	Match(*http.Request, *MatchOption) bool
+	Match(*httper.Request, *MatchOption) bool
 }
 
 var matchers = map[string]RequestMatcher{}
@@ -26,6 +27,7 @@ var matchers = map[string]RequestMatcher{}
 func Initialize() {
 	register("plain", PlainTextRequestMatcher{})
 	register("regexp", RegexpRequestMatcher{})
+	register("json", JsonRequestMatcher{})
 	register("xml", XmlRequestMatcher{})
 }
 
@@ -39,6 +41,12 @@ func Match(req *http.Request, m *MatchOption) bool {
 		t = "plain"
 	}
 
-	logger.Debug("Match route with " + t)
-	return matchers[t].Match(req, m)
+	reqBody, err := httputil.DumpRequest(req, true)
+	if err != nil {
+		return false
+	}
+
+	r := httper.NewRequest(string(reqBody))
+
+	return matchers[t].Match(&r, m)
 }

@@ -1,16 +1,19 @@
 package matcher
 
 import (
+	"strings"
+
 	"gopkg.in/xmlpath.v1"
-	"net/http"
+
+	httper "inthemiddle/httper"
 )
 
 type XmlRequestMatcher struct {
 }
 
-func (m XmlRequestMatcher) Match(req *http.Request, matcher *MatchOption) bool {
+func (m XmlRequestMatcher) Match(req *httper.Request, matcher *MatchOption) bool {
     path := xmlpath.MustCompile(matcher.Match.Path)
-    root, err := xmlpath.Parse(req.Body)
+    root, err := xmlpath.Parse(strings.NewReader(req.Payload))
 
     if err != nil {
         return false
