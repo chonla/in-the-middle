@@ -2,12 +2,19 @@ package matcher
 
 import (
 	"net/http"
+
+	logger "inthemiddle/logger"
 )
 
 type MatchOption struct {
-    Pattern string
+	Pattern string
 	Type    string
-	Match   string
+	Match   MatchItem
+}
+
+type MatchItem struct {
+	Path  string
+	Value string
 }
 
 type RequestMatcher interface {
@@ -17,18 +24,21 @@ type RequestMatcher interface {
 var matchers = map[string]RequestMatcher{}
 
 func Initialize() {
-    register("plain", PlainTextRequestMatcher{})
+	register("plain", PlainTextRequestMatcher{})
 	register("regexp", RegexpRequestMatcher{})
+	register("xml", XmlRequestMatcher{})
 }
 
 func register(key string, m RequestMatcher) {
-    matchers[key] = m;
+	matchers[key] = m
 }
 
 func Match(req *http.Request, m *MatchOption) bool {
-    t := m.Type
-    if t == "" {
-        t = "plain"
-    }
-    return matchers[t].Match(req, m)
+	t := m.Type
+	if t == "" {
+		t = "plain"
+	}
+
+	logger.Debug("Match route with " + t)
+	return matchers[t].Match(req, m)
 }

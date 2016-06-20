@@ -24,9 +24,14 @@ type CacheItem struct {
 }
 
 type RequestMatcher struct {
-	Pattern string `json:"pattern"`
-	Type    string `json:"type,omitempty"`
-	Match   string `json:"match,omitempty"`
+	Pattern string    `json:"pattern"`
+	Type    string    `json:"type,omitempty"`
+	Match   MatchItem `json:"match,omitempty"`
+}
+
+type MatchItem struct {
+	Path  string `json:"path"`
+	Value string `json:"value"`
 }
 
 type Responsible struct {
@@ -37,8 +42,11 @@ type Responsible struct {
 func (c *CacheItem) Match(req *http.Request) bool {
 	return matcher.Match(req, &matcher.MatchOption{
 		Pattern: c.Matcher.Pattern,
-		Type: c.Matcher.Type,
-		Match: c.Matcher.Match,
+		Type:    c.Matcher.Type,
+		Match: matcher.MatchItem{
+			Path:  c.Matcher.Match.Path,
+			Value: c.Matcher.Match.Value,
+		},
 	})
 }
 
