@@ -1,0 +1,75 @@
+[{
+    "name": "plain_text_request_matching",
+    "matcher": {
+        "pattern": "http://myurl.com/",
+        "type": "plain"
+    },
+    "states": {
+        "__default": {
+            "return": "file://./fixtures/myurl.txt",
+            "next_state": "myurl_state1"
+        },
+        "myurl_state1": {
+            "return": "file://./fixtures/myurl_state1.txt",
+            "next_state": "__default"
+        }
+    }
+}, {
+    "name": "json_request_matching",
+    "matcher": {
+        "pattern": "http://myurl.com/api/delete",
+        "type": "json",
+        "match": {
+            "path": "user/id",
+            "value": "1"
+        }
+    },
+    "states": {
+        "__default": {
+            "return": "file://./fixtures/delete_user_success.txt",
+            "next_state": "no_user_found"
+        },
+        "no_user_found": {
+            "return": "file://./fixtures/no_user_found.txt",
+            "next_state": "__default"
+        }
+    }
+}, {
+    "name": "xml_request_matching",
+    "matcher": {
+        "pattern": "http://myurl.com/api/xml/query",
+        "type": "xml",
+        "match": {
+            "path": "//*/user/id",
+            "value": "20"
+        }
+    },
+    "states": {
+        "__default": {
+            "return": "file://./fixtures/user_id_20.txt"
+        }
+    }
+}, {
+    "name": "regular_expression_request_matching",
+    "matcher": {
+        "pattern": "http://server[12345]\\.myurl\\.com/",
+        "type": "regexp"
+    },
+    "states": {
+        "__default": {
+            "return": "file://./fixtures/server_a.txt"
+        }
+    }
+},
+{
+    "name": "another_regular_expression_request_matching",
+    "matcher": {
+        "pattern": "http://server[67890]\\.myurl\\.com/",
+        "type": "regexp"
+    },
+    "states": {
+        "__default": {
+            "return": "file://./fixtures/server_b.txt"
+        }
+    }
+}]

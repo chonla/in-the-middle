@@ -33,3 +33,11 @@ Use ```go get ./...``` to install all dependencies.
 * ```github.com/kr/pretty```
 * ```gopkg.in/xmlpath.v1```
 * ```github.com/jmoiron/jsonq```
+
+## Examples
+
+See ```examples``` directory for example.
+
+## Github
+
+https://github.com/chonla/in-the-middle

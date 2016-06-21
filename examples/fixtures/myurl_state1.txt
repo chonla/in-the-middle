@@ -1,0 +1,6 @@
+HTTP/1.1 200 OK
+Content-Type: text/html
+
+my URL page content with state 1.
+
+This page should be displayed when state is state1.

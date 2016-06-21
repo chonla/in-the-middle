@@ -1,0 +1,4 @@
+curl http://myurl.com
+curl -d '{"user":{"id": "1"}}' -H "Content-Type: plain/text" http://myurl.com/api/delete
+curl -X POST -d "<?xml version=\"1.0\"?><root><user><id>20</id></user></root>" "http://myurl.com/api/xml/query"
+curl http://server6.myurl.com

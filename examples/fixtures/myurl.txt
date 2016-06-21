@@ -1,0 +1,4 @@
+HTTP/1.1 200 OK
+Content-Type: text/html
+
+This page should be displayed with GET request has been detected with plain text request matcher.
