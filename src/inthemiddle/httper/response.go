@@ -1,6 +1,7 @@
 package httper
 
 import (
+	"errors"
 	"fmt"
 	"regexp"
 	"strings"
@@ -35,6 +36,11 @@ func (r *Response) ToString() string {
 
 func (r *Response) parse(body string) {
 	parts := strings.SplitN(body, "\r\n\r\n", 2)
+	if len(parts) < 2 {
+		logger.Error(errors.New("Invalid response format."))
+		return
+	}
+
 	header := parts[0]
 	payload := parts[1]
 	r.Header = NewResponseHeader(header)

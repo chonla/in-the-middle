@@ -1,6 +1,7 @@
 package httper
 
 import (
+	"errors"
 	"fmt"
 	"regexp"
 	"strings"
@@ -9,7 +10,7 @@ import (
 )
 
 type Request struct {
-	h RequestHeader
+	h       RequestHeader
 	Payload string
 }
 
@@ -47,7 +48,11 @@ func NewRequest(body string) Request {
 }
 
 func NewRequestHeader(header string) (h RequestHeader) {
-    headers := strings.Split(header, "\r\n")
+	headers := strings.Split(header, "\r\n")
+	if len(headers) < 2 {
+		logger.Error(errors.New("Invalid request format."))
+		return
+	}
 
 	pattern := `([A-Z]+) (.+) (HTTP)/(\d+\.\d+)`
 	re, err := regexp.Compile(pattern)
@@ -61,18 +66,18 @@ func NewRequestHeader(header string) (h RequestHeader) {
 	h.protocol = matches[3]
 	h.version = matches[4]
 
-    pattern = `([^:]+):\s*(.*)`
-    re, err = regexp.Compile(pattern)
-    if err != nil {
+	pattern = `([^:]+):\s*(.*)`
+	re, err = regexp.Compile(pattern)
+	if err != nil {
 		logger.Error(err)
 		return
 	}
 
-    h.headers = []HeaderKeyPair{}
-    for _, v := range headers[1:] {
-        matches = re.FindStringSubmatch(v)
-        h.headers = append(h.headers, HeaderKeyPair{Key: matches[1], Value: matches[2]})
-    }
+	h.headers = []HeaderKeyPair{}
+	for _, v := range headers[1:] {
+		matches = re.FindStringSubmatch(v)
+		h.headers = append(h.headers, HeaderKeyPair{Key: matches[1], Value: matches[2]})
+	}
 
 	return
 }
@@ -91,8 +96,8 @@ func (r *Request) parse(body string) {
 
 func (h *RequestHeader) ToString() string {
 	buf := fmt.Sprintf("\"%s %s %s/%s\"", h.method, h.path, h.protocol, h.version)
-    for _, v := range h.headers {
-        buf = buf + " " + v.ToString()
-    }
-    return buf
+	for _, v := range h.headers {
+		buf = buf + " " + v.ToString()
+	}
+	return buf
 }
