@@ -4,9 +4,13 @@ Stateful mock server
 
 ## To record activities
 
+Start In The Middle
+
 ```sh
 go run main/main.go -record
 ```
+
+Set browser's proxy to In The Middle's listening IP and port and start the activities.
 
 ## To replay activities
 
