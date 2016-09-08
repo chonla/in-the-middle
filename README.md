@@ -42,6 +42,15 @@ Use ```go get ./...``` to install all dependencies.
 
 See ```examples``` directory for example.
 
+## Get Started
+
+1. Start in-the-middle in RECORD mode with default setting.
+2. Use ```curl --proxy http://localhost:8080 http://anyHTTPdomain``` to record request and response. You should see request and response in in-the-middle console log.
+3. Stop in-the-middle by Ctrl-C. File stub.json should be created in ./fixtures folder.
+4. Start in-the-middle in REPLAY mode with default setting.
+5. Use ```curl --proxy http://localhost:8080 http://anyHTTPdomain``` to get cached response. If request hits cache, you should see "Cache HIT" message in in-the-middle console. Otherwise, you should see "Cache MISSED" message.
+6. You can modify cached content by editing files in ./fixtures folder.
+
 ## Github
 
 https://github.com/chonla/in-the-middle
