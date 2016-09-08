@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"regexp"
 	"strings"
+	"net/url"
 
 	logger "inthemiddle/logger"
 )
@@ -19,6 +20,7 @@ type RequestHeader struct {
 	path     string
 	protocol string
 	version  string
+	hostname string
 	headers  []HeaderKeyPair
 }
 
@@ -27,18 +29,26 @@ func (r *Request) URL() string {
 	if r.h.protocol == "HTTPS" {
 		protocol = "https://"
 	}
-	host := r.h.Host()
+	host := r.h.hostname
 	path := r.h.path
 	return protocol + host + path
 }
 
-func (h *RequestHeader) Host() string {
+func (h *RequestHeader) ExtractHostname() string {
+	hostname := ""
 	for _, v := range h.headers {
 		if strings.ToLower(v.Key) == "host" {
-			return v.Value
+			hostname = strings.ToLower(v.Value)
+			return hostname
 		}
 	}
-	return ""
+	if h.path[0:7] == "http://" || h.path[0:8] == "https://" {
+		u, _ := url.Parse(h.path)
+		hostname = u.Host
+		h.path = u.Path
+		return hostname
+	}
+	return hostname
 }
 
 func NewRequest(body string) Request {
@@ -78,6 +88,8 @@ func NewRequestHeader(header string) (h RequestHeader) {
 		matches = re.FindStringSubmatch(v)
 		h.headers = append(h.headers, HeaderKeyPair{Key: matches[1], Value: matches[2]})
 	}
+
+	h.hostname = h.ExtractHostname()
 
 	return
 }
