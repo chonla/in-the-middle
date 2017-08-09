@@ -6,13 +6,13 @@ import (
 	"net/http/httputil"
 	"os"
 
+	cacher "github.com/chonla/inthemiddle/cacher"
+	httper "github.com/chonla/inthemiddle/httper"
+	logger "github.com/chonla/inthemiddle/logger"
+	proxy "github.com/chonla/inthemiddle/proxy"
+	goproxy "github.com/elazarl/goproxy"
 	"github.com/fatih/color"
-	goproxy "gopkg.in/elazarl/goproxy.v1"
 	"gopkg.in/elazarl/goproxy.v1/transport"
-	cacher "inthemiddle/cacher"
-	httper "inthemiddle/httper"
-	logger "inthemiddle/logger"
-	proxy "inthemiddle/proxy"
 )
 
 var (

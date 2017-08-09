@@ -3,11 +3,11 @@ package httper
 import (
 	"errors"
 	"fmt"
+	"net/url"
 	"regexp"
 	"strings"
-	"net/url"
 
-	logger "inthemiddle/logger"
+	logger "github.com/chonla/inthemiddle/logger"
 )
 
 type Request struct {

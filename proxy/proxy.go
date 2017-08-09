@@ -1,14 +1,16 @@
 package proxy
 
 import (
-	goproxy "gopkg.in/elazarl/goproxy.v1"
 	"net/http"
 	"os"
 	"os/signal"
 	"syscall"
 
-	cacher "inthemiddle/cacher"
-	logger "inthemiddle/logger"
+	goproxy "github.com/elazarl/goproxy"
+
+	logger "github.com/chonla/inthemiddle/logger"
+
+	cacher "github.com/chonla/inthemiddle/cacher"
 )
 
 type Options struct {
@@ -36,7 +38,7 @@ func Start(op Options) {
 
 	cacher.SetExportFolder(options.ExportFolder)
 
-	if (!options.Record) {
+	if !options.Record {
 		cacher.Load("stub.json")
 		logger.Info("In the middle has been started in REPLAY mode. Press ^C to terminate In the middle.")
 	} else {
@@ -57,7 +59,7 @@ func onRequestHandler(req *http.Request, ctx *goproxy.ProxyCtx) (*http.Request, 
 }
 
 func onResponseHandler(resp *http.Response, ctx *goproxy.ProxyCtx) *http.Response {
-	if (options.Record) {
+	if options.Record {
 		if resp.Header.Get("X-Cacher") != "In-The-Middle" {
 			cacher.Store(ctx.Req, resp)
 		}
@@ -75,7 +77,7 @@ func WaitForExitSignal() {
 	go func() {
 		<-c
 
-		if (!options.Record) {
+		if !options.Record {
 			logger.Info("In the middle has been terminated from REPLAY mode.")
 		} else {
 			logger.Info("Flush cache to file.")

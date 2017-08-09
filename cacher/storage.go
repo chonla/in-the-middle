@@ -6,7 +6,7 @@ import (
 	"os"
 	"regexp"
 
-    logger "inthemiddle/logger"
+	logger "github.com/chonla/inthemiddle/logger"
 )
 
 var maxSlot = 1000

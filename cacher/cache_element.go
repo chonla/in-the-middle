@@ -7,9 +7,9 @@ import (
 	"net/http"
 	"strconv"
 
-	httper "inthemiddle/httper"
-	logger "inthemiddle/logger"
-	matcher "inthemiddle/matcher"
+	httper "github.com/chonla/inthemiddle/httper"
+	logger "github.com/chonla/inthemiddle/logger"
+	matcher "github.com/chonla/inthemiddle/matcher"
 )
 
 type Cache []CacheItem

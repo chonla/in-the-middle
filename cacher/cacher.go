@@ -2,14 +2,14 @@ package cacher
 
 import (
 	"encoding/json"
+	"errors"
 	"io/ioutil"
 	"net/http"
 	"net/http/httputil"
 	"os"
-    "errors"
 
-	logger "inthemiddle/logger"
-	matcher "inthemiddle/matcher"
+	logger "github.com/chonla/inthemiddle/logger"
+	matcher "github.com/chonla/inthemiddle/matcher"
 )
 
 var (
@@ -22,35 +22,35 @@ func SetExportFolder(path string) {
 }
 
 func Find(req *http.Request) (*http.Response, error) {
-    for k, v := range cache {
-        if v.Match(req) {
-            return cache[k].GetResponse(), nil
-        }
-    }
-    return nil, errors.New("Cache missed.")
+	for k, v := range cache {
+		if v.Match(req) {
+			return cache[k].GetResponse(), nil
+		}
+	}
+	return nil, errors.New("Cache missed.")
 }
 
 func Load(filename string) error {
-    data, err := ioutil.ReadFile(toFolder + "/" + filename)
-    if (err != nil) {
-        return err
-    }
-    err = json.Unmarshal(data, &cache)
-    if (err != nil) {
-        logger.Debug("Unable to load " + filename)
-        logger.Debug(err)
-        cache = Cache{}
-        return err
-    }
-    for k, _ := range cache {
+	data, err := ioutil.ReadFile(toFolder + "/" + filename)
+	if err != nil {
+		return err
+	}
+	err = json.Unmarshal(data, &cache)
+	if err != nil {
+		logger.Debug("Unable to load " + filename)
+		logger.Debug(err)
+		cache = Cache{}
+		return err
+	}
+	for k, _ := range cache {
 		cache[k].currentState = "__default"
 	}
 
-    logger.Debug(toFolder + "/" + filename + " has been loaded.")
+	logger.Debug(toFolder + "/" + filename + " has been loaded.")
 
 	matcher.Initialize()
 
-    return nil
+	return nil
 }
 
 func Store(req *http.Request, resp *http.Response) {
@@ -64,7 +64,7 @@ func Store(req *http.Request, resp *http.Response) {
 		},
 		//req:  req,
 		//resp: resp,
-        currentState: "__default",
+		currentState: "__default",
 		ResponseStates: map[string]Responsible{
 			"__default": Responsible{
 				Return: string(respBody),

@@ -4,7 +4,7 @@ import (
 	"net/http"
 	"net/http/httputil"
 
-	httper "inthemiddle/httper"
+	httper "github.com/chonla/inthemiddle/httper"
 )
 
 type MatchOption struct {

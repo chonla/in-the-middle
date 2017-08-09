@@ -6,7 +6,7 @@ import (
 	"regexp"
 	"strings"
 
-	logger "inthemiddle/logger"
+	logger "github.com/chonla/inthemiddle/logger"
 )
 
 type Response struct {
